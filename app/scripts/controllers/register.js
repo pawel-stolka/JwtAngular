@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('authFromScratchApp')
-  .controller('RegisterCtrl', function($scope, $http) {
+  .controller('RegisterCtrl', function($scope, $rootScope, $http, alert) {
     $scope.submit = function() {
 
       var url = '/',
         user = {};
       $http.post(url, user)
         .then(function(res) {
-          console.log("good");
+          alert('success', 'OK!', 'You are now registered');
         }, function(err) {
-          console.log("error from RegisterCtrl");
+          alert('warning', 'Ooops!', 'Could not register');
         });
     }
   });
