@@ -4,8 +4,10 @@ angular.module('authFromScratchApp')
   .controller('RegisterCtrl', function($scope, $rootScope, $http, alert) {
     $scope.submit = function() {
 
-      var url = '/',
-        user = {};
+      var url = 'http://localhost:3000/register',
+        user = {
+          name: 'Pablo'
+        };
       $http.post(url, user)
         .then(function(res) {
           alert('success', 'OK!', 'You are now registered');
