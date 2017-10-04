@@ -1,17 +1,16 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name authFromScratchApp.controller:RegisterCtrl
- * @description
- * # RegisterCtrl
- * Controller of the authFromScratchApp
- */
 angular.module('authFromScratchApp')
-  .controller('RegisterCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  .controller('RegisterCtrl', function($scope, $http) {
+    $scope.submit = function() {
+
+      var url = '/',
+        user = {};
+      $http.post(url, user)
+        .then(function(res) {
+          console.log("good");
+        }, function(err) {
+          console.log("error from RegisterCtrl");
+        });
+    }
   });

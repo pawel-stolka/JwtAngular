@@ -1,8 +1,10 @@
 'use strict';
 
-angular.module('authFromScratchApp').config(function($stateProvider) {
+angular.module('authFromScratchApp').config(function($urlRouterProvider, $stateProvider) {
 
-    $stateProvider
+  $urlRouterProvider.otherwise('/');
+
+  $stateProvider
 
     .state('main', {
       url: '/',
@@ -11,6 +13,7 @@ angular.module('authFromScratchApp').config(function($stateProvider) {
 
     .state('register', {
       url: '/register',
-      templateUrl: '/views/register.html'
+      templateUrl: '/views/register.html',
+      controller: 'RegisterCtrl'
     });
-  })
+})
