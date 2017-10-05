@@ -2,8 +2,8 @@ var express = require('express'),
   bodyParser = require('body-parser'),
   mongoose = require('mongoose'),
   mongoUrl = 'mongodb://localhost/jwt',
-
-  User = require('./models/User.js');
+  User = require('./models/User.js'),
+  jwt = require('./services/jwt.js');
 // cors = require('cors');
 
 var port = 3000;
@@ -43,6 +43,8 @@ app.post('/register', function(req, res) {
 })
 
 mongoose.connect(mongoUrl);
+
+// console.log(jwt.encode('hi', 'secret'));
 
 var server = app.listen(port, function() {
   console.log('api listening on ', port);
