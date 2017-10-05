@@ -13,7 +13,8 @@ var UserSchema = new mongoose.Schema({
 UserSchema.methods.toJSON = function() {
   var user = this.toObject();
   delete user.password;
-  console.log('deleted password, user: ' + user);
+  console.log('deleted password. user:');
+  console.log(user);
   return user;
 }
 
