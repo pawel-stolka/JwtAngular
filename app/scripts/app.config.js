@@ -15,5 +15,10 @@ angular.module('authFromScratchApp').config(function($urlRouterProvider, $stateP
       url: '/register',
       templateUrl: '/views/register.html',
       controller: 'RegisterCtrl'
+    })
+
+    .state('logout', {
+      url: '/logout',
+      controller: 'LogoutCtrl'
     });
 })
