@@ -5,6 +5,7 @@ var express = require('express'),
   User = require('./models/User.js'),
   jwt = require('./services/jwt.js');
 // cors = require('cors');
+var SECRET = "shh...";
 
 var port = 3000;
 
@@ -31,6 +32,13 @@ app.post('/register', function(req, res) {
     password: user.password
   });
 
+  var payload = {
+    iss: req.hostname,
+    sub: user._id
+  }
+
+  var token = jwt.encode(payload, SECRET);
+
   newUser.save(function(err, done) {
     console.log('after save');
 
@@ -38,7 +46,10 @@ app.post('/register', function(req, res) {
       return res.send(err);
     else
       return res.status(200)
-        .send(newUser.toJSON());
+        .send({
+          user: newUser.toJSON(),
+          token: token
+        });
   })
 })
 
