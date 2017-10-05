@@ -37,7 +37,8 @@ app.post('/register', function(req, res) {
     if (err)
       return res.send(err);
     else
-      return res.status(200).json(newUser);
+      return res.status(200)
+        .send(newUser.toJSON());
   })
 })
 
