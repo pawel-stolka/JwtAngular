@@ -53,6 +53,26 @@ app.post('/register', function(req, res) {
   })
 })
 
+var jobs = [
+  'Michael Jordan',
+  'Jennifer Aniston',
+  'George Lucas',
+  'Sean Connery'
+];
+
+app.get('/jobs', function(req, res) {
+	var token = req.headers.authorization.split(' ')[1],
+	payload = jwt.decode(token, SECRET);
+
+  if (!req.headers.authorization) {
+    return res.status(401).send({
+      message: 'You are not authorized'
+    });
+  }
+
+  res.json(jobs);
+})
+
 mongoose.connect(mongoUrl);
 
 // console.log(jwt.encode('hi', 'secret'));
