@@ -12,9 +12,10 @@ angular.module('authFromScratchApp')
 
       $http.post(url, user)
         .then(function(res) {
-          alert('success', 'Account Created', 'Welcome, ' + res.data.user.email + '!');
-          console.log(res.data);
-          authToken.setToken(res.token);
+          var data = res.data;
+          alert('success', 'Account Created', 'Welcome, ' + data.user.email + '!');
+          console.log(data);
+          authToken.setToken(data.token);
         }, function(err) {
           alert('warning', 'Ooops!', 'Could not register');
         });

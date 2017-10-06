@@ -3,7 +3,7 @@ var express = require('express'),
   mongoose = require('mongoose'),
   mongoUrl = 'mongodb://localhost/jwt',
   User = require('./models/User.js'),
-  jwt = require('./services/jwt.js');
+  jwt = require('jwt-simple');
 // cors = require('cors');
 var SECRET = "shh...";
 
