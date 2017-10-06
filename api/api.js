@@ -34,7 +34,7 @@ app.post('/register', function(req, res) {
 
   var payload = {
     iss: req.hostname,
-    sub: user._id
+    sub: newUser.id
   }
 
   var token = jwt.encode(payload, SECRET);
@@ -61,13 +61,20 @@ var jobs = [
 ];
 
 app.get('/jobs', function(req, res) {
-	var token = req.headers.authorization.split(' ')[1],
-	payload = jwt.decode(token, SECRET);
-
   if (!req.headers.authorization) {
     return res.status(401).send({
       message: 'You are not authorized'
     });
+  }
+
+  var token = req.headers.authorization.split(' ')[1],
+    payload = jwt.decode(token, SECRET);
+
+  if (!payload.sub) {
+    res.status(401)
+      .send({
+        message: 'Authentication failed'
+      });
   }
 
   res.json(jobs);
