@@ -9,4 +9,4 @@
  * Main module of the application.
  */
 angular
-  .module('authFromScratchApp', ['ui.router']);
+  .module('authFromScratchApp', ['ui.router', 'ngAnimate']);

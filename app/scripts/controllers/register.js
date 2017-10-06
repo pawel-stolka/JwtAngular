@@ -12,7 +12,8 @@ angular.module('authFromScratchApp')
 
       $http.post(url, user)
         .then(function(res) {
-          alert('success', 'OK!', 'You are now registered');
+          alert('success', 'Account Created', 'Welcome, ' + res.data.user.email + '!');
+          console.log(res.data);
           authToken.setToken(res.token);
         }, function(err) {
           alert('warning', 'Ooops!', 'Could not register');
