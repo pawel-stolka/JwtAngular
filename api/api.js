@@ -18,8 +18,9 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-  console.log('something is happening...');
+  
+  var date = new Date();
+  console.log('something is happening... ' + date);
   next();
 })
 
@@ -27,29 +28,17 @@ app.use(function(req, res, next) {
 app.post('/register', function(req, res) {
   var user = req.body;
 
-  var newUser = new User.model({
+  var newUser = new User({
     email: user.email,
     password: user.password
   });
 
-  var payload = {
-    iss: req.hostname,
-    sub: newUser.id
-  }
 
-  var token = jwt.encode(payload, SECRET);
 
   newUser.save(function(err, done) {
-    console.log('after save');
-
     if (err)
       return res.send(err);
-    else
-      return res.status(200)
-        .send({
-          user: newUser.toJSON(),
-          token: token
-        });
+    createSendToken(newUser, res);
   })
 })
 
@@ -79,6 +68,50 @@ app.get('/jobs', function(req, res) {
 
   res.json(jobs);
 })
+
+app.post('/login', function(req, res) {
+  req.user = req.body;
+
+  var searchUser = {
+    email: req.user.email
+  };
+
+  User.findOne(searchUser, null,
+    function(err, user) {
+      if (err) throw err;
+
+      if (!user)
+        res.status(401).send({ message: 'Wrong email/password' });
+
+      user.comparePasswords(req.user.password,
+        function(err, isMatch) {
+          if (err) throw err;
+
+          if (!isMatch)
+            return res.status(401).send({ message: 'Wrong email/password' });
+
+          createSendToken(user, res);
+        })
+    })
+})
+
+function createSendToken(user, res) {
+  var payload = {
+    // iss: req.hostname,
+    sub: user.id
+  }
+
+  var token = jwt.encode(payload, SECRET);
+
+  console.log('after save');
+
+
+  return res.status(200)
+    .send({
+      user: user.toJSON(),
+      token: token
+    });
+}
 
 mongoose.connect(mongoUrl);
 

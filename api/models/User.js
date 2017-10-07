@@ -10,6 +10,10 @@ var UserSchema = new mongoose.Schema({
   }
 })
 
+UserSchema.methods.comparePasswords = function(password, callback) {
+  bcrypt.compare(password, this.password, callback);
+}
+
 UserSchema.methods.toJSON = function() {
   var user = this.toObject();
   delete user.password;
@@ -42,4 +46,4 @@ UserSchema.pre('save', function(next) {
 })
 
 var User = mongoose.model('User', UserSchema);
-exports.model = User;
+module.exports = User;
