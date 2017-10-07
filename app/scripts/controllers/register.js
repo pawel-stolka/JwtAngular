@@ -14,11 +14,17 @@ angular.module('authFromScratchApp')
       $http.post(url, user)
         .then(function(res) {
           var data = res.data;
-          alert('success', 'Account Created', 'Welcome, ' + data.user.email + '!');
-          console.log(data);
-          authToken.setToken(data.token);
+          authSuccessful(data);
+
         }, function(err) {
           alert('warning', 'Ooops! Could not register :( ', err.message);
         });
+    }
+
+    function authSuccessful(data) {
+      alert('success', 'Account Created', 'Welcome, ' + data.user.email + '!');
+
+      authToken.setToken(data.token);
+      $state.go('main');
     }
   });

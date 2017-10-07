@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('authFromScratchApp').controller('LoginCtrl', function($scope, $http, API_URL, alert, authToken) {
+angular.module('authFromScratchApp').controller('LoginCtrl', function($scope, $http, API_URL, alert, authToken, $state) {
   $scope.submit = function() {
 
     // var url = 'http://localhost:3000/register';
@@ -16,6 +16,7 @@ angular.module('authFromScratchApp').controller('LoginCtrl', function($scope, $h
         alert('success', 'Account Created', 'Thanks for coming back ' + data.user.email + '!');
         console.log(data);
         authToken.setToken(data.token);
+        $state.go('main');
       }, function(err) {
         alert('warning', 'Something went wrong :(', err.message);
       });
