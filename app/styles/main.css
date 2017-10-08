@@ -11,6 +11,7 @@ body {
 
 
 
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 
 .header,
@@ -19,6 +20,7 @@ body {
   padding-left: 15px;
   padding-right: 15px;
 }
+
 
 
 
@@ -31,6 +33,7 @@ body {
 
 
 
+
 /* Make the masthead heading the same height as the navigation */
 
 .header h3 {
@@ -39,6 +42,7 @@ body {
   line-height: 40px;
   padding-bottom: 19px;
 }
+
 
 
 
@@ -56,6 +60,7 @@ body {
 
 
 
+
 /* Main marketing message and sign up button */
 
 .jumbotron {
@@ -70,6 +75,7 @@ body {
 
 
 
+
 /* Supporting marketing content */
 
 .marketing {
@@ -79,6 +85,7 @@ body {
 .marketing p+h4 {
   margin-top: 28px;
 }
+
 
 
 
@@ -200,11 +207,22 @@ body {
 }
 
 [ui-view].ng-leave {
-  opacity:  1;
-  -webkit-transform: translate3d(0,0,0);
-  -moz-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
+  opacity: 1;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
+
 [ui-view].ng-leave-active {
   opacity: 0;
+}
+
+
+
+
+body {
+  background: url('http://farm3.staticflickr.com/2832/12303719364_c25cecdc28_b.jpg') fixed;
+  background-size: cover;
+  padding: 0;
+  margin: 0;
 }
