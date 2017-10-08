@@ -18,29 +18,13 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  
+
   var date = new Date();
   console.log('something is happening... ' + date);
   next();
 })
 
 
-app.post('/register', function(req, res) {
-  var user = req.body;
-
-  var newUser = new User({
-    email: user.email,
-    password: user.password
-  });
-
-
-
-  newUser.save(function(err, done) {
-    if (err)
-      return res.send(err);
-    createSendToken(newUser, res);
-  })
-})
 
 var jobs = [
   'Michael Jordan',
@@ -69,6 +53,21 @@ app.get('/jobs', function(req, res) {
   res.json(jobs);
 })
 
+app.post('/register', function(req, res) {
+  var user = req.body;
+
+  var newUser = new User({
+    email: user.email,
+    password: user.password
+  });
+
+  newUser.save(function(err, done) {
+    if (err)
+      return res.send(err);
+    createSendToken(newUser, res);
+  })
+})
+
 app.post('/login', function(req, res) {
   req.user = req.body;
 
@@ -91,9 +90,27 @@ app.post('/login', function(req, res) {
             return res.status(401).send({ message: 'Wrong email/password' });
 
           createSendToken(user, res);
+          updateLoggedAt(user, res);
         })
     })
 })
+
+function updateLoggedAt(user) {
+  var newUser = new User({
+    email: user.email,
+    password: user.password
+  });
+  newUser.save(function(err, done) {
+    if (err)
+      return res.send(err);
+
+    return res.status(200)
+      .send({
+        user: user.toJSON(),
+        loggedAt: new Date
+      });
+  })
+}
 
 function createSendToken(user, res) {
   var payload = {

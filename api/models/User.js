@@ -7,6 +7,10 @@ var UserSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  loggedAt: {
+    type: Array,
+    default: Date.now
   }
 })
 

@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('authFromScratchApp')
-  .directive('validateEquals', function () {
+angular.module('authFromScratchApp').directive('validateEquals', function () {
     return {
       require: 'ngModel',
       link: function(scope, element, attrs, ngModelCtrl) {

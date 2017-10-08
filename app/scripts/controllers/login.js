@@ -14,7 +14,7 @@ angular.module('authFromScratchApp').controller('LoginCtrl', function($scope, $h
       .then(function(res) {
         var data = res.data;
         alert('success', 'Account Created', 'Thanks for coming back ' + data.user.email + '!');
-        console.log(data);
+        // console.log(data);
         authToken.setToken(data.token);
         $state.go('main');
       }, function(err) {
