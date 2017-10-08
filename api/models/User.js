@@ -7,7 +7,8 @@ var UserSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  loginDates: []
 })
 
 UserSchema.methods.comparePasswords = function(password, callback) {
@@ -17,8 +18,8 @@ UserSchema.methods.comparePasswords = function(password, callback) {
 UserSchema.methods.toJSON = function() {
   var user = this.toObject();
   delete user.password;
-  console.log('deleted password. user:');
-  console.log(user);
+  // console.log('deleted password. user:');
+  // console.log(user);
   return user;
 }
 
@@ -37,7 +38,7 @@ UserSchema.pre('save', function(next) {
       if (err) return next(err);
 
       user.password = hash;
-      console.log('encrypted password: ' + user.password);
+      // console.log('encrypted password: ' + user.password);
       next();
     })
   })
