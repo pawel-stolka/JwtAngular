@@ -3,6 +3,7 @@ var express = require('express'),
   mongoose = require('mongoose'),
   mongoUrl = 'mongodb://localhost/jwt',
   User = require('./models/User.js'),
+  // LoggedIn = require('./models/LoggedIn.js'),
   jwt = require('jwt-simple');
 // cors = require('cors');
 var SECRET = "shh...";
@@ -18,12 +19,27 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  
+
   var date = new Date();
   console.log('something is happening... ' + date);
   next();
 })
 
+// app.post('/register', function(req, res) {
+//     var user = req.body;
+
+//     var loggedIn = new LoggedIn({
+//       email: user.email
+//     });
+
+//     loggedIn.save(function(err, done) {
+//       if (err)
+//         return res.send(err);
+//       console.log("inside register loggedIn.save");
+//       // createSendToken(newUser, res);
+//     })
+
+// })
 
 app.post('/register', function(req, res) {
   var user = req.body;
@@ -33,11 +49,10 @@ app.post('/register', function(req, res) {
     password: user.password
   });
 
-
-
   newUser.save(function(err, done) {
     if (err)
       return res.send(err);
+    console.log("inside register.save");
     createSendToken(newUser, res);
   })
 })
@@ -69,6 +84,27 @@ app.get('/jobs', function(req, res) {
   res.json(jobs);
 })
 
+var LoggedInSchema = new mongoose.Schema({
+  email: String,
+  LoggedAt: {
+    type: Date,
+    default: Date.now
+  }
+})
+var LoggedIn = mongoose.model('LoggedIn', LoggedInSchema);
+
+function saveLoggedIn(email) {
+
+  var small = new LoggedIn({ email: email });
+  console.log("small.....");
+  console.log(small);
+  small.save(function(err, done) {
+    if (err) return handleError(err);
+    // console.log("inside save LoggedIn");
+  })
+  console.log(".....after save");
+}
+
 app.post('/login', function(req, res) {
   req.user = req.body;
 
@@ -90,10 +126,84 @@ app.post('/login', function(req, res) {
           if (!isMatch)
             return res.status(401).send({ message: 'Wrong email/password' });
 
+          // var loggedUser = new LoggedIn({
+          //   email: user.email
+          // });
+          // loggedUser.save(function(err) {
+          //   // err can come from a middleware
+          //   console.log('inside save logging...');
+          // });
+          saveLoggedIn(user.email);
           createSendToken(user, res);
+
         })
+
     })
+
+
+
+  // loggedUser.save(function(err) {
+  //   // err can come from a middleware
+  //   console.log('inside save logging...');
+  // return res.status(200)
+  // .send({
+  //   user: searchUser.toJSON()
+  // });
+  // });
+
+  // logLogin(req.user, res);
 })
+/*
+app.post('/register', function(req, res) {
+  var user = req.body;
+
+  var newUser = new User({
+    email: user.email,
+    password: user.password
+  });
+
+  newUser.save(function(err, done) {
+    if (err)
+      return res.send(err);
+    console.log("inside register.save");
+    createSendToken(newUser, res);
+  })
+})
+*/
+
+
+
+
+/*
+  app.post('/register', function(req, res) {
+  var user = req.body;
+
+  var newUser = new User({
+    email: user.email,
+    password: user.password
+  });
+
+  newUser.save(function(err, done) {
+    if (err)
+      return res.send(err);
+    createSendToken(newUser, res);
+  })
+})
+
+  
+
+
+  var newUser = new User({
+    email: user.email,
+    password: user.password
+  });
+
+  newUser.save(function(err, done) {
+    if (err)
+      return res.send(err);
+    createSendToken(newUser, res);
+  })*/
+
 
 function createSendToken(user, res) {
   var payload = {

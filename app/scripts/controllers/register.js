@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('authFromScratchApp')
-  .controller('RegisterCtrl', function($scope, $rootScope, $http, alert, authToken, API_URL) {
+  .controller('RegisterCtrl', function($scope, $rootScope, $http, alert, authToken, API_URL, $state) {
     $scope.submit = function() {
 
       // var url = 'http://localhost:3000/register',
