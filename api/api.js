@@ -57,6 +57,32 @@ app.post('/register', function(req, res) {
   })
 })
 
+app.get('/users', function(req, res) {
+
+  var query = User.find();
+
+  query.exec(function(err, users) {
+    if (err) return handleError(err);
+    // athletes contains an ordered list of 5 athletes who play Tennis
+    return res.status(200).send({
+      users: users
+    });
+  })
+})
+
+app.get('/loggedIn', function(req, res) {
+
+  var query = LoggedIn.find();
+
+  query.exec(function(err, users) {
+    if (err) return handleError(err);
+    // athletes contains an ordered list of 5 athletes who play Tennis
+    return res.status(200).send({
+      loggedIn: users
+    });
+  })
+})
+
 var jobs = [
   'Michael Jordan',
   'Jennifer Aniston',
@@ -93,18 +119,6 @@ var LoggedInSchema = new mongoose.Schema({
 })
 var LoggedIn = mongoose.model('LoggedIn', LoggedInSchema);
 
-function saveLoggedIn(email) {
-
-  var small = new LoggedIn({ email: email });
-  console.log("small.....");
-  console.log(small);
-  small.save(function(err, done) {
-    if (err) return handleError(err);
-    // console.log("inside save LoggedIn");
-  })
-  console.log(".....after save");
-}
-
 app.post('/login', function(req, res) {
   req.user = req.body;
 
@@ -126,84 +140,22 @@ app.post('/login', function(req, res) {
           if (!isMatch)
             return res.status(401).send({ message: 'Wrong email/password' });
 
-          // var loggedUser = new LoggedIn({
-          //   email: user.email
-          // });
-          // loggedUser.save(function(err) {
-          //   // err can come from a middleware
-          //   console.log('inside save logging...');
-          // });
           saveLoggedIn(user.email);
           createSendToken(user, res);
-
         })
-
     })
-
-
-
-  // loggedUser.save(function(err) {
-  //   // err can come from a middleware
-  //   console.log('inside save logging...');
-  // return res.status(200)
-  // .send({
-  //   user: searchUser.toJSON()
-  // });
-  // });
-
-  // logLogin(req.user, res);
 })
-/*
-app.post('/register', function(req, res) {
-  var user = req.body;
 
-  var newUser = new User({
-    email: user.email,
-    password: user.password
-  });
+function saveLoggedIn(email) {
 
-  newUser.save(function(err, done) {
-    if (err)
-      return res.send(err);
-    console.log("inside register.save");
-    createSendToken(newUser, res);
+  var user = new LoggedIn({ email: email });
+  console.log("saveLoggedIn.....");
+
+  user.save(function(err, done) {
+    if (err) return handleError(err);
   })
-})
-*/
-
-
-
-
-/*
-  app.post('/register', function(req, res) {
-  var user = req.body;
-
-  var newUser = new User({
-    email: user.email,
-    password: user.password
-  });
-
-  newUser.save(function(err, done) {
-    if (err)
-      return res.send(err);
-    createSendToken(newUser, res);
-  })
-})
-
-  
-
-
-  var newUser = new User({
-    email: user.email,
-    password: user.password
-  });
-
-  newUser.save(function(err, done) {
-    if (err)
-      return res.send(err);
-    createSendToken(newUser, res);
-  })*/
-
+  console.log(".....after saveLoggedIn");
+}
 
 function createSendToken(user, res) {
   var payload = {
