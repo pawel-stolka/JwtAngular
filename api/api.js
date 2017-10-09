@@ -71,7 +71,23 @@ app.get('/users', function(req, res) {
 })
 
 app.get('/loggedIn', function(req, res) {
+if (!req.headers.authorization) {
+    return res.status(401).send({
+      message: 'You are not authorized'
+    });
+  }
 
+  var token = req.headers.authorization.split(' ')[1],
+    payload = jwt.decode(token, SECRET);
+
+if (!payload.sub) {
+    res.status(401)
+      .send({
+        message: 'Authentication failed'
+      });
+  }
+
+  // res.json(jobs);
   var query = LoggedIn.find();
 
   query.exec(function(err, users) {
