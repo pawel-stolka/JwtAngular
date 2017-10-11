@@ -17,7 +17,7 @@ angular.module('authFromScratchApp').controller('LoginCtrl', function($scope, $h
         // console.log(data);
         authToken.setToken(data.token);
 
-        $state.go('main');
+        $state.go('users');
       }, function(err) {
         alert('warning', 'Something went wrong :(', err.message);
       });

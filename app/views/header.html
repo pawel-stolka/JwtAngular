@@ -18,6 +18,9 @@
           <li ui-sref-active="active">
             <a ui-sref="jobs">Jobs</a>
           </li>
+          <li ng-show="isAuthenticated()" ui-sref-active="active">
+            <a ui-sref="users">Users</a>
+          </li>
           <li ng-hide="isAuthenticated()" ui-sref-active="active">
             <a ui-sref="login">Login</a>
           </li>

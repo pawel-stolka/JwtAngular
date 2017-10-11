@@ -71,7 +71,8 @@ app.get('/users', function(req, res) {
 })
 
 app.get('/loggedIn', function(req, res) {
-if (!req.headers.authorization) {
+
+  if (!req.headers.authorization) {
     return res.status(401).send({
       message: 'You are not authorized'
     });
@@ -80,7 +81,7 @@ if (!req.headers.authorization) {
   var token = req.headers.authorization.split(' ')[1],
     payload = jwt.decode(token, SECRET);
 
-if (!payload.sub) {
+  if (!payload.sub) {
     res.status(401)
       .send({
         message: 'Authentication failed'
@@ -137,6 +138,7 @@ var LoggedIn = mongoose.model('LoggedIn', LoggedInSchema);
 
 app.post('/login', function(req, res) {
   req.user = req.body;
+  // console.log(req.user);
 
   var searchUser = {
     email: req.user.email
@@ -144,21 +146,24 @@ app.post('/login', function(req, res) {
 
   User.findOne(searchUser, null,
     function(err, user) {
-      if (err) throw err;
+      if (err) {
+        res.status(401).send({ message: 'Probably no such a user in database...' });
+      }
 
-      if (!user)
+      if (!user) {
         res.status(401).send({ message: 'Wrong email/password' });
+      } else {
+        user.comparePasswords(req.user.password,
+          function(err, isMatch) {
+            if (err) throw err;
 
-      user.comparePasswords(req.user.password,
-        function(err, isMatch) {
-          if (err) throw err;
+            if (!isMatch)
+              return res.status(401).send({ message: 'Wrong email/password' });
 
-          if (!isMatch)
-            return res.status(401).send({ message: 'Wrong email/password' });
-
-          saveLoggedIn(user.email);
-          createSendToken(user, res);
-        })
+            saveLoggedIn(user.email);
+            createSendToken(user, res);
+          })
+      }
     })
 })
 

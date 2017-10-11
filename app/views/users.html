@@ -1,0 +1,10 @@
+<script src="../scripts/custom.js"></script>
+<script src="../scripts/d3/d3.min.js"></script>
+<h1>Users</h1>
+<div ng-repeat="user in users">
+  {{user.email}} - from {{user.createDate}}, logged in: {{user.logCounter.length}} times (last time: {{user.logCounter[user.logCounter.length - 1].day}})
+</div>
+<div id="chart"></div>
+
+
+
