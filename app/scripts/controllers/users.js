@@ -6,20 +6,21 @@ angular.module('authFromScratchApp').controller('UsersCtrl', function($scope, $h
     .then(function(users) {
 
       var loggedInUsers = users.data.loggedIn; //.users;
-
+      // console.log(loggedInUsers);
       $.each(loggedInUsers, function(i, v) {
         var date = v.LoggedAt.substr(0, 10),
-          time = v.LoggedAt.substr(11, 8);
-
+          time = v.LoggedAt.substr(11, 8),
+          logCounter = getLoggons(v.email);
         var logUser = {
           email: v.email,
           loggedDay: date,
           loggedTime: time
+          // logCounter: logCounter
         };
         loggons.push(logUser);
 
       });
-      console.log(loggons);
+      // console.log(loggons);
     }, function(err) {
       alert('warning', 'Unable to get loggedIns', err.message);
     });
@@ -27,14 +28,21 @@ angular.module('authFromScratchApp').controller('UsersCtrl', function($scope, $h
   function getLoggons(email) {
     var correct = [];
     $.each(loggons, function(i, v) {
+      
       if (v.email == email)
-        correct.push({ day: v.loggedDay, time: v.loggedTime });
+        correct.push({
+          day: v.loggedDay,
+          time: v.loggedTime,
+          logCounter: v.email
+        });
     })
+    // console.log(correct);
     return correct;
   }
 
   $http.get(API_URL + 'users')
     .then(function(users) {
+      
       var users = users.data.users;
       // var combo = {
       //   users: users,
@@ -42,6 +50,7 @@ angular.module('authFromScratchApp').controller('UsersCtrl', function($scope, $h
       // };
       var usersConv = [];
       // var counters = [];
+
 
       $.each(users, function(i, v) {
         var date = v.createdAt.substr(0, 10),
@@ -62,6 +71,7 @@ angular.module('authFromScratchApp').controller('UsersCtrl', function($scope, $h
       })
 
       $scope.users = usersConv;
+      users = usersConv;
 
       // console.log($scope.combo);
       console.log($scope.users);
